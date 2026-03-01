@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Exclusiva | Nuestra Historia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    
+    <style>
+        body { font-family: 'Montserrat', sans-serif; overflow-x: hidden; background-color: #f8fafc; }
+        h1, h2, h3, .font-serif { font-family: 'Playfair Display', serif; }
+        
+        .hero-zoom { animation: slowZoom 20s infinite alternate; }
+        @keyframes slowZoom { from { transform: scale(1); } to { transform: scale(1.1); } }
+        
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all 0.8s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .btn-premium { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; }
+        .btn-premium:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        
+        .loader { position: fixed; inset: 0; z-index: 100; background: #0f172a; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease; }
+        .story-img-container:hover img { transform: scale(1.05); }
+        .story-img-container img { transition: transform 1.5s ease; }
+    </style>
+</head>
+<body>
+
+    <script>
+        const evento = {
+            tipo: "Boda",
+            nombreEvento: "Nuestra Historia de Amor",
+            anfitriones: "Daniela & Sebastian",
+            invitado: "Francisco",
+            generoInvitado: "masculino", // masculino | femenino | neutro
+            fecha: "2026-12-18T18:00:00",
+            lugar: "Hacienda Los Olivos, San Luis Potosí",
+            mensajeBienvenida: "Hay momentos que cambian la vida para siempre...",
+            historiaBase: "Nos conocimos una tarde lluviosa en San Luis Potosí, cuando el destino decidió cruzar nuestros caminos en una cafetería del centro. Lo que comenzó como una conversación casual sobre libros, se convirtió en tardes interminables de risas, viajes espontáneos y sueños compartidos. Después de 5 años creciendo juntos, decidimos dar el siguiente paso y prometer acompañarnos toda la vida.",
+            colores: ["#0f172a", "#f8fafc"],
+            musicaFondo: "assets/musica.mp3",
+            mensajeFinal: "Gracias por ser parte de nuestra historia.",
+            textoRSVP: "Confirmar asistencia",
+            imagenHero: "assets/hero.jpg",
+            imagenesHistoria: [
+                "assets/historia1.jpg",
+                "assets/historia2.jpg",
+                "assets/historia3.jpg"
+            ],
+            mapaEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3695.533230588647!2d-101.011409!3d22.143362!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDA4JzM2LjEiTiAxMDHCsDAwJzQxLjEiVw!5e0!3m2!1ses!2smx!4v1700000000000"
+        };
+    </script>
+
+    <div id="loader" class="loader text-white flex-col">
+        <div class="mb-4 animate-pulse font-serif text-3xl">Cargando Experiencia...</div>
+        <div class="w-48 h-[1px] bg-white/20 relative overflow-hidden">
+            <div class="absolute inset-0 bg-white translate-x-[-100%] animate-[slide_2s_infinite]"></div>
+        </div>
+    </div>
+
+    <button id="musicToggle" class="fixed bottom-8 right-8 z-50 p-4 rounded-full glass text-slate-800 shadow-xl border-slate-200 bg-white/80 hover:bg-white transition-all">
+        <i data-lucide="music"></i>
+        <audio id="bgMusic" loop>
+            <source src="" id="musicSource" type="audio/mpeg">
+        </audio>
+    </button>
+
+    <section class="relative h-screen w-full overflow-hidden flex items-center justify-center text-center">
+        <div class="absolute inset-0 z-0">
+            <img id="heroImg" src="" alt="Hero" class="w-full h-full object-cover hero-zoom">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-slate-900/90"></div>
+        </div>
+        
+        <div class="relative z-10 px-6 max-w-4xl">
+            <p id="welcomeMsg" class="text-white/80 uppercase tracking-[0.3em] text-sm mb-4 animate-fade-in"></p>
+            <h1 id="eventTitle" class="text-5xl md:text-8xl text-white font-serif mb-6 drop-shadow-2xl"></h1>
+            <div class="w-24 h-[1px] bg-white/50 mx-auto mb-8"></div>
+            <p id="hosts" class="text-2xl md:text-3xl text-white/90 font-serif italic mb-12"></p>
+            
+            <a href="#historia" class="inline-block p-4 rounded-full border border-white/30 text-white animate-bounce">
+                <i data-lucide="chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 bg-slate-900 text-white overflow-hidden">
+        <div class="max-w-3xl mx-auto text-center reveal">
+            <h3 class="text-gold-500 font-serif text-2xl mb-8 italic">Para ti, <span id="guestName"></span></h3>
+            <p id="personalizedNote" class="text-xl md:text-2xl leading-relaxed font-light text-slate-300 italic"></p>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white border-y border-slate-100">
+        <div class="max-w-5xl mx-auto px-6">
+            <div id="countdown" class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="flex flex-col"><span id="days" class="text-5xl font-serif text-slate-800">00</span><span class="text-xs uppercase tracking-widest text-slate-500">Días</span></div>
+                <div class="flex flex-col"><span id="hours" class="text-5xl font-serif text-slate-800">00</span><span class="text-xs uppercase tracking-widest text-slate-500">Horas</span></div>
+                <div class="flex flex-col"><span id="minutes" class="text-5xl font-serif text-slate-800">00</span><span class="text-xs uppercase tracking-widest text-slate-500">Minutos</span></div>
+                <div class="flex flex-col"><span id="seconds" class="text-5xl font-serif text-slate-800">00</span><span class="text-xs uppercase tracking-widest text-slate-500">Segundos</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="historia" class="bg-slate-50">
+        <div id="storyContainer">
+            </div>
+    </section>
+
+    <section class="py-24 px-6 bg-white relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-4xl font-serif text-slate-900 mb-4">Cuándo & Dónde</h2>
+                <p id="eventLocation" class="text-slate-600 tracking-wide uppercase text-sm"></p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="reveal">
+                    <div class="aspect-square w-full rounded-2xl overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-1000">
+                        <iframe id="mapFrame" src="" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+                
+                <div class="space-y-8 reveal">
+                    <div class="flex flex-col gap-4">
+                        <button onclick="addToCalendar()" class="btn-premium w-full py-4 bg-slate-900 text-white rounded-lg flex items-center justify-center gap-3">
+                            <i data-lucide="calendar"></i> Agendar en Google Calendar
+                        </button>
+                        <button onclick="shareWhatsApp()" class="btn-premium w-full py-4 border border-slate-200 text-slate-800 rounded-lg flex items-center justify-center gap-3">
+                            <i data-lucide="share-2"></i> Compartir con alguien
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 bg-slate-900 text-white">
+        <div class="max-w-xl mx-auto glass p-10 rounded-3xl reveal">
+            <h2 class="text-3xl font-serif text-center mb-8">Confirma tu Asistencia</h2>
+            <form id="rsvpForm" class="space-y-6">
+                <div>
+                    <label class="block text-xs uppercase tracking-widest mb-2 text-slate-400">Nombre Completo</label>
+                    <input type="text" required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 focus:outline-none focus:border-white transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-widest mb-2 text-slate-400">¿Nos acompañarás?</label>
+                    <select required class="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 focus:outline-none focus:border-white appearance-none">
+                        <option value="si" class="text-slate-900">Sí, con mucho gusto</option>
+                        <option value="no" class="text-slate-900">Lamentablemente no puedo</option>
+                    </select>
+                </div>
+                <button type="submit" id="rsvpBtn" class="w-full py-4 bg-white text-slate-900 font-bold rounded-lg hover:bg-slate-200 transition-colors uppercase tracking-widest text-sm">
+                    Confirmar
+                </button>
+            </form>
+            <div id="rsvpSuccess" class="hidden text-center py-4 animate-fade-in">
+                <i data-lucide="heart" class="mx-auto mb-4 text-red-400 fill-red-400"></i>
+                <p class="text-xl font-serif italic">¡Gracias por ser parte de este sueño!</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 text-center bg-white">
+        <p id="finalMsg" class="font-serif text-2xl text-slate-400 italic mb-4"></p>
+        <div class="text-[10px] tracking-[0.5em] text-slate-300 uppercase">Hecho con amor para esta ocasión</div>
+    </footer>
+
+    <script>
+        // Inicialización de Datos
+        document.getElementById('eventTitle').innerText = evento.nombreEvento;
+        document.getElementById('hosts').innerText = evento.anfitriones;
+        document.getElementById('welcomeMsg').innerText = evento.mensajeBienvenida;
+        document.getElementById('guestName').innerText = evento.invitado;
+        document.getElementById('eventLocation').innerText = `${new Date(evento.fecha).toLocaleDateString('es-MX', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'})} | ${evento.lugar}`;
+        document.getElementById('heroImg').src = evento.imagenHero;
+        document.getElementById('musicSource').src = evento.musicaFondo;
+        document.getElementById('mapFrame').src = evento.mapaEmbed;
+        document.getElementById('finalMsg').innerText = evento.mensajeFinal;
+        document.getElementById('rsvpBtn').innerText = evento.textoRSVP;
+
+        // Narrativa Emocional Adaptativa
+        const noteElement = document.getElementById('personalizedNote');
+        if(evento.generoInvitado === "masculino"){
+            noteElement.innerText = "Sabemos que los momentos importantes se construyen con personas firmes, leales y presentes. Tu lugar en esta historia no es casualidad, es un honor contar con tu presencia.";
+        } else if(evento.generoInvitado === "femenino"){
+            noteElement.innerText = "Hay almas que hacen que los recuerdos brillen más fuerte. Tu energía, sensibilidad y cariño han iluminado nuestro camino; este día será aún más mágico porque estarás ahí.";
+        } else {
+            noteElement.innerText = "Cada historia se vuelve inolvidable cuando se comparte con quienes realmente importan. Tu presencia es el regalo más valioso en este nuevo capítulo que comenzamos.";
+        }
+
+        // Renderizado de Historia Dinámica
+        const storyContainer = document.getElementById('storyContainer');
+        const storyParts = evento.historiaBase.match(/[^.!?]+[.!?]+/g) || [evento.historiaBase];
+        
+        evento.imagenesHistoria.forEach((img, index) => {
+            const section = document.createElement('div');
+            section.className = "relative h-[80vh] w-full flex items-center justify-center overflow-hidden mb-1";
+            section.innerHTML = `
+                <div class="absolute inset-0 story-img-container">
+                    <img src="${img}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/50"></div>
+                </div>
+                <div class="relative z-10 px-6 max-w-2xl text-center text-white reveal">
+                    <p class="text-xl md:text-2xl font-serif italic leading-relaxed">
+                        "${storyParts[index] || "Un capítulo más de este gran viaje..."}"
+                    </p>
+                </div>
+            `;
+            storyContainer.appendChild(section);
+        });
+
+        // Countdown Timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const target = new Date(evento.fecha).getTime();
+            const diff = target - now;
+
+            if (diff > 0) {
+                document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById('hours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById('minutes').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById('seconds').innerText = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+            }
+        }
+        setInterval(updateCountdown, 1000);
+
+        // Música
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicToggle');
+        let isPlaying = false;
+
+        musicBtn.onclick = () => {
+            if (isPlaying) { music.pause(); } else { music.play(); }
+            isPlaying = !isPlaying;
+            musicBtn.classList.toggle('animate-spin', isPlaying);
+        };
+
+        // Google Calendar Link
+        function addToCalendar() {
+            const start = evento.fecha.replace(/-|:|\.\d\d\d/g, "");
+            const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(evento.nombreEvento)}&dates=${start}/${start}&details=${encodeURIComponent(evento.mensajeBienvenida)}&location=${encodeURIComponent(evento.lugar)}`;
+            window.open(url, '_blank');
+        }
+
+        // WhatsApp Share
+        function shareWhatsApp() {
+            const text = `¡Hola! Te comparto la invitación de ${evento.nombreEvento}. Será el ${new Date(evento.fecha).toLocaleDateString()} en ${evento.lugar}.`;
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        // RSVP Animation
+        document.getElementById('rsvpForm').onsubmit = (e) => {
+            e.preventDefault();
+            document.getElementById('rsvpForm').classList.add('hidden');
+            document.getElementById('rsvpSuccess').classList.remove('hidden');
+        };
+
+        // Inicializar Iconos y Animaciones de Scroll
+        window.onload = () => {
+            lucide.createIcons();
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => document.getElementById('loader').remove(), 1000);
+
+            ScrollReveal().reveal('.reveal', {
+                delay: 200,
+                distance: '30px',
+                duration: 1000,
+                origin: 'bottom',
+                interval: 100
+            });
+        };
+    </script>
+</body>
+</html>
